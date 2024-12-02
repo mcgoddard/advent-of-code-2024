@@ -2,6 +2,7 @@ use advent_of_code_2024::SolverTrait;
 
 mod part1;
 mod part2;
+mod lib;
 
 pub struct Solver;
 
