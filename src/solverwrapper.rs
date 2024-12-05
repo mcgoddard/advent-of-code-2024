@@ -3,6 +3,7 @@ use crate::day_1;
 use crate::day_2;
 use crate::day_3;
 use crate::day_4;
+use crate::day_5;
 
 pub struct SolverWrapper {
   pub solver: Box<dyn SolverTrait>,
@@ -15,6 +16,7 @@ impl SolverWrapper {
       2 => Box::new(day_2::Solver),
       3 => Box::new(day_3::Solver),
       4 => Box::new(day_4::Solver),
+      5 => Box::new(day_5::Solver),
       _ => panic!("Invalid day {}", day),
     };
 
