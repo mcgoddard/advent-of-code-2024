@@ -1,9 +1,4 @@
-use itertools::Itertools;
-
-struct Equation {
-  result: i64,
-  values: Vec<i64>,
-}
+use super::lib::{parse_equations, variations_up_to_length, Equation};
 
 #[derive(Debug, Eq, PartialEq, Hash)]
 enum Operators {
@@ -12,13 +7,7 @@ enum Operators {
 }
 
 pub fn part1(lines: Vec<String>) -> i64 {
-  let equations = lines.iter().map(|line| {
-    let parts = line.split(": ").collect::<Vec<&str>>();
-    Equation {
-      result: parts[0].parse().unwrap(),
-      values: parts[1].split(" ").map(|v| v.parse().unwrap()).collect(),
-    }
-  }).collect::<Vec<Equation>>();
+  let equations = parse_equations(lines);
   let mut valid_results_sum = 0;
   let operators = vec![Operators::Add, Operators::Multiply];
   for equation in equations {
@@ -31,10 +20,6 @@ pub fn part1(lines: Vec<String>) -> i64 {
     }
   }
   valid_results_sum
-}
-
-fn variations_up_to_length<T>(items: &[T], length: usize) -> impl Iterator<Item = Vec<&T>> {
-  std::iter::repeat(items.iter()).take(length).multi_cartesian_product()
 }
 
 fn valid_test_case(equation: &Equation, test_case: &[&Operators]) -> bool {
