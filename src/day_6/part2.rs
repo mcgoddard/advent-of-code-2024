@@ -10,14 +10,14 @@ pub fn part2(lines: Vec<String>) -> i64 {
     if (*x == start_position.0 && *y == start_position.1) || map[*y as usize][*x as usize] == Space::Blocked {
       return false;
     }
-    let mut new_map = map.iter().map(|line| line.iter().map(|space| space).cloned().collect()).collect::<Vec<Vec<Space>>>();
+    let mut new_map = map.iter().map(|line| line.to_vec()).collect::<Vec<Vec<Space>>>();
     new_map[*y as usize][*x as usize] = Space::Blocked;
     is_cycle(start_position, &start_direction, &new_map)
   }).filter(|v| *v).collect::<Vec<bool>>();
   valid_positions.len() as i64
 }
 
-fn is_cycle(start_position: (i64, i64), start_direction: &Direction, map: &Vec<Vec<Space>>) -> bool {
+fn is_cycle(start_position: (i64, i64), start_direction: &Direction, map: &[Vec<Space>]) -> bool {
   let mut visited: HashSet::<(i64, i64, Direction)> = HashSet::new();
   let mut position = start_position;
   let mut direction = start_direction;
@@ -51,5 +51,5 @@ fn is_cycle(start_position: (i64, i64), start_direction: &Direction, map: &Vec<V
       position = new_position
     }
   }
-  return false;
+  false
 }

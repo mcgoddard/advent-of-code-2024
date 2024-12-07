@@ -14,7 +14,7 @@ pub enum Direction {
   Right,
 }
 
-pub fn parse_input(lines: &Vec<String>) -> ((i64, i64), Direction, Vec<Vec<Space>>) {
+pub fn parse_input(lines: &[String]) -> ((i64, i64), Direction, Vec<Vec<Space>>) {
   let mut position: (i64, i64) = (0, 0);
   let mut direction = Direction::Up;
   let map: Vec<Vec<Space>> = lines.iter().enumerate().map(|(y, line)| line.chars().enumerate().map(|(x, c)| {
@@ -23,30 +23,30 @@ pub fn parse_input(lines: &Vec<String>) -> ((i64, i64), Direction, Vec<Vec<Space
       '^' => {
         direction = Direction::Up;
         position = (x as i64, y as i64);
-        return Space::Open;
+        Space::Open
       },
       'V' => {
         direction = Direction::Down;
         position = (x as i64, y as i64);
-        return Space::Open;
+        Space::Open
       },
       '<' => {
         direction = Direction::Left;
         position = (x as i64, y as i64);
-        return Space::Open;
+        Space::Open
       },
       '>' => {
         direction = Direction::Right;
         position = (x as i64, y as i64);
-        return Space::Open;
+        Space::Open
       },
       _ => Space::Open,
     }
   }).collect()).collect();
-  return (position, direction, map);
+  (position, direction, map)
 }
 
-pub fn get_visited(start_position: (i64, i64), start_direction: &Direction, map: &Vec<Vec<Space>>) -> HashSet<(i64, i64)> {
+pub fn get_visited(start_position: (i64, i64), start_direction: &Direction, map: &[Vec<Space>]) -> HashSet<(i64, i64)> {
   let mut visited: HashSet::<(i64, i64)> = HashSet::new();
   let mut position = start_position;
   let mut direction = start_direction;
