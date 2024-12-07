@@ -30,9 +30,11 @@ fn valid_test_case(equation: &Equation, test_case: &[&Operators]) -> bool {
       Operators::Add => working_result + equation.values[i + 1],
       Operators::Multiply => working_result * equation.values[i + 1],
       Operators::Combine => {
-        let mut new_value = working_result.to_string();
-        new_value.push_str(&equation.values[i + 1].to_string());
-        new_value.parse().unwrap()
+        let mut power = 10;
+        while equation.values[i + 1] >= power {
+          power *= 10;
+        }
+        working_result * power + equation.values[i + 1]
       },
     };
     if working_result > equation.result {
