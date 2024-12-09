@@ -22,14 +22,14 @@ pub fn part2(lines: Vec<String>) -> i64 {
       }
       false
     });
-    if empty_index.is_none() {
-      continue;
-    }
-    let current_empty = match blocks[empty_index.unwrap()] {
+    let empty_index = match empty_index {
+      Some(i) => i,
+      None => continue,
+    };
+    let current_empty = match blocks[empty_index] {
       Blocks::Empty(e) => e,
       _ => panic!("Current block is not an empty"),
     };
-    let empty_index = empty_index.unwrap();
     if empty_index > file_index {
       continue;
     }
