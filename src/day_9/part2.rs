@@ -5,24 +5,26 @@ use super::lib::{parse_blocks, Blocks, Empty};
 pub fn part2(lines: Vec<String>) -> i64 {
   let (mut blocks, max_file_num, _total_empty) = parse_blocks(&lines);
   for i in (0..max_file_num).rev() {
-    let file_index = blocks.iter().position(|b| {
+    let file_index = match blocks.iter().position(|b| {
       if let Blocks::File(f) = b {
         return f.file_num == i;
       }
       false
-    }).unwrap();
+    }) {
+      Some(i) => i,
+      None => panic!("No index found for file {:?}", i),
+    };
     let current_block = blocks[file_index];
     let current_file = match current_block {
       Blocks::File(f) => f,
       _ => panic!("Current block is not a file"),
     };
-    let empty_index = blocks.iter().position(|b| {
+    let empty_index = match blocks.iter().position(|b| {
       if let Blocks::Empty(e) = b {
         return e.length >= current_file.length;
       }
       false
-    });
-    let empty_index = match empty_index {
+    }) {
       Some(i) => i,
       None => continue,
     };

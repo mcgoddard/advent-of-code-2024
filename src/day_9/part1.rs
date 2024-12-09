@@ -20,24 +20,26 @@ pub fn part1(lines: Vec<String>) -> i64 {
       }
       Blocks::File(_) => panic!("Last block is a file!"),
     }
-    let mut last_file = File { length: 0, file_num: 0 };
-    let mut file_index= 0;
-    for i in (0..blocks.len() - 1).rev() {
-      if let Blocks::File(f) = blocks[i] {
-        file_index = i;
-        last_file = f;
-        break;
-      }
-    }
-    let mut first_empty = Empty { length: 0 };
-    let mut empty_index= 0;
-    for (i, block) in blocks.iter().enumerate().take(blocks.len() - 1) {
-      if let Blocks::Empty(e) = block {
-        empty_index = i;
-        first_empty = *e;
-        break;
-      }
-    }
+    let file_index = blocks.len() - 1 - match blocks.iter().rev().position(|b| {
+      matches!(b, Blocks::File(_))
+    }) {
+      Some(i) => i,
+      None => panic!("No last file in blocks!"),
+    };
+    let last_file = match blocks[file_index] {
+      Blocks::File(f) => f,
+      _ => panic!("Last file was not a file!"),
+    };
+    let empty_index = match blocks.iter().position(|b| {
+      matches!(b, Blocks::Empty(_))
+    }) {
+      Some(i) => i,
+      None => panic!("No empty found!"),
+    };
+    let first_empty = match blocks[empty_index] {
+      Blocks::Empty(e) => e,
+      _ => panic!("First empty was a file!"),
+    };
     if first_empty.length == 0 {
       blocks.remove(empty_index);
       continue;
@@ -82,6 +84,10 @@ pub fn part1(lines: Vec<String>) -> i64 {
       },
     }
   }
+  get_checksum(&blocks)
+}
+
+fn get_checksum(blocks: &Vec<Blocks>) -> i64 {
   let mut index = 0;
   let mut checksum = 0;
   for block in blocks {
