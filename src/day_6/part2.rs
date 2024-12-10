@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use super::lib::{get_visited, parse_input, Direction, Space};
 
 pub fn part2(lines: &[String]) -> i64 {
-  let (start_position, start_direction, map) = parse_input(&lines);
+  let (start_position, start_direction, map) = parse_input(lines);
   let mut visited = get_visited(start_position, &start_direction, &map);
   visited.remove(&start_position);
   let valid_positions = visited.iter().map(|(x, y)| {

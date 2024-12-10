@@ -5,7 +5,7 @@ use itertools::Itertools;
 use super::lib::{get_antinode, parse_antennas};
 
 pub fn part1(lines: &[String]) -> i64 {
-  let antenna_map = parse_antennas(&lines);
+  let antenna_map = parse_antennas(lines);
   let mut antinodes: HashSet<(i64, i64)> = HashSet::new();
   for (_, positions) in antenna_map.iter() {
     let combinations = positions.iter().combinations(2).collect::<Vec<Vec<&(i64, i64)>>>();

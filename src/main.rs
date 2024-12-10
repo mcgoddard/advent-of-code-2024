@@ -7,6 +7,7 @@ mod day_6;
 mod day_7;
 mod day_8;
 mod day_9;
+mod day_10;
 mod solverwrapper;
 
 use advent_of_code_2024::read_lines;

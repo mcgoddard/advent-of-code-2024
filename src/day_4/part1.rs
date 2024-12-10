@@ -7,7 +7,7 @@ pub fn part1(lines: &[String]) -> i64 {
   // Add horizonal lines
   let mut all_lines = lines.to_vec();
   // Add vertical lines
-  let vertical = get_verticals(&lines);
+  let vertical = get_verticals(lines);
   all_lines.extend(vertical);
   // Add diagonal lines
   let diagonal  = get_diagonals(lines.iter().map(|l| l.chars().collect::<Vec<char>>()).collect::<Vec<Vec<char>>>());
