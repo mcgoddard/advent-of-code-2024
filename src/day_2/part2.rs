@@ -1,6 +1,6 @@
 use crate::day_2::lib::test_report;
 
-pub fn part2(lines: Vec<String>) -> i64 {
+pub fn part2(lines: &[String]) -> i64 {
   let reports = lines.iter().map(|line| line.split(" ").collect::<Vec<&str>>().iter().map(|v| v.parse().unwrap()).collect()).collect::<Vec<Vec<i64>>>();
   let report_safe = reports.iter().map(|report| {
     let mut variations = vec![report.clone()];

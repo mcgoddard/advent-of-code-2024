@@ -13,7 +13,7 @@ pub fn check_update(rules_hash: &HashMap<i64, HashSet<i64>>, update: &[i64]) -> 
   true
 }
 
-pub fn parse_rules_and_updates(lines: Vec<String>) -> (HashMap<i64, HashSet<i64>>, Vec<Vec<i64>>) {
+pub fn parse_rules_and_updates(lines: &[String]) -> (HashMap<i64, HashSet<i64>>, Vec<Vec<i64>>) {
   let mut rules = true;
   let mut ordering_rules = vec![];
   let mut updates = vec![];

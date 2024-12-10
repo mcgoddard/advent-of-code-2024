@@ -6,7 +6,7 @@ enum Operators {
   Multiply,
 }
 
-pub fn part1(lines: Vec<String>) -> i64 {
+pub fn part1(lines: &[String]) -> i64 {
   let equations = parse_equations(lines);
   let mut valid_results_sum = 0;
   let operators = vec![Operators::Add, Operators::Multiply];

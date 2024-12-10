@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 
 use super::lib::{parse_blocks, Blocks, Empty};
 
-pub fn part2(lines: Vec<String>) -> i64 {
+pub fn part2(lines: &[String]) -> i64 {
   let (mut blocks, max_file_num, _total_empty) = parse_blocks(&lines);
   for i in (0..max_file_num).rev() {
     let file_index = match blocks.iter().position(|b| {

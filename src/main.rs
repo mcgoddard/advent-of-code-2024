@@ -42,7 +42,7 @@ fn main() {
   }
   let lines = read_lines(&filename);
 
-  let result = solver.solve(args.part, lines);
+  let result = solver.solve(args.part, &lines);
 
   println!("Result: {}", result);
 }

@@ -1,6 +1,6 @@
 use regex::Regex;
 
-pub fn part1(lines: Vec<String>) -> i64 {
+pub fn part1(lines: &[String]) -> i64 {
   let re = Regex::new(r"mul\(([0-9]+),([0-9]+)\)").unwrap();
   let mut result = 0;
   for line in lines {

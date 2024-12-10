@@ -10,7 +10,7 @@ pub fn variations_up_to_length<T>(items: &[T], length: usize) -> impl Iterator<I
   std::iter::repeat(items.iter()).take(length).multi_cartesian_product()
 }
 
-pub fn parse_equations(lines: Vec<String>) -> Vec<Equation> {
+pub fn parse_equations(lines: &[String]) -> Vec<Equation> {
   lines.iter().map(|line| {
     let parts = line.split(": ").collect::<Vec<&str>>();
     Equation {

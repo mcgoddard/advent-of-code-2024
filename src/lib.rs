@@ -11,6 +11,6 @@ pub fn read_lines(filename: &str) -> Vec<String> {
 }
 
 pub trait SolverTrait {
-  fn part_1(&self, lines: Vec<String>) -> i64;
-  fn part_2(&self, lines: Vec<String>) -> i64;
+  fn part_1(&self, lines: &[String]) -> i64;
+  fn part_2(&self, lines: &[String]) -> i64;
 }

@@ -1,11 +1,11 @@
 use regex::Regex;
 
-pub fn part1(lines: Vec<String>) -> i64 {
+pub fn part1(lines: &[String]) -> i64 {
   let re = Regex::new(r".*?(XMAS).*?").unwrap();
   let reverse_re = Regex::new(r".*?(SAMX).*?").unwrap();
   let mut result = 0;
   // Add horizonal lines
-  let mut all_lines = lines.clone();
+  let mut all_lines = lines.to_vec();
   // Add vertical lines
   let vertical = get_verticals(&lines);
   all_lines.extend(vertical);
