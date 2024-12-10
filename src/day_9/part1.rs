@@ -10,16 +10,15 @@ pub fn part1(lines: Vec<String>) -> i64 {
     }));
   }
   loop {
-    let last_empty_length;
-    match &blocks[blocks.len() - 1] {
+    let last_empty_length = match &blocks[blocks.len() - 1] {
       Blocks::Empty(e) => {
-        last_empty_length = e.length;
         if e.length == total_empty {
           break;
         }
+        e.length
       }
       Blocks::File(_) => panic!("Last block is a file!"),
-    }
+    };
     let file_index = blocks.len() - 1 - match blocks.iter().rev().position(|b| {
       matches!(b, Blocks::File(_))
     }) {
