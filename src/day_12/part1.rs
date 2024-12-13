@@ -1,5 +1,7 @@
 use std::collections::HashSet;
 
+use super::lib::OFFSETS;
+
 pub fn part1(lines: &[String]) -> i64 {
   let chars = lines.iter().map(|l| l.chars().collect()).collect::<Vec<Vec<char>>>();
   let mut visited: HashSet<(usize, usize)> = HashSet::new();
@@ -21,33 +23,16 @@ fn flood_fill(map: &[Vec<char>], start_position: (usize, usize), visited: &mut H
   let mut perimeter = 0;
   visited.insert(start_position);
   area += 1;
-  if start_position.0 >= 1 && map[start_position.1][start_position.0 - 1] == map[start_position.1][start_position.0] {
-    let (new_area, new_perimeter) = flood_fill(map, (start_position.0 - 1, start_position.1), visited);
-    area += new_area;
-    perimeter += new_perimeter;
-  } else {
-    perimeter += 1;
-  }
-  if start_position.1 >= 1 && map[start_position.1 - 1][start_position.0] == map[start_position.1][start_position.0] {
-    let (new_area, new_perimeter) = flood_fill(map, (start_position.0, start_position.1 - 1), visited);
-    area += new_area;
-    perimeter += new_perimeter;
-  } else {
-    perimeter += 1;
-  }
-  if start_position.0 < map[0].len() - 1 && map[start_position.1][start_position.0 + 1] == map[start_position.1][start_position.0] {
-    let (new_area, new_perimeter) = flood_fill(map, (start_position.0 + 1, start_position.1), visited);
-    area += new_area;
-    perimeter += new_perimeter;
-  } else {
-    perimeter += 1;
-  }
-  if start_position.1 < map.len() - 1 && map[start_position.1 + 1][start_position.0] == map[start_position.1][start_position.0] {
-    let (new_area, new_perimeter) = flood_fill(map, (start_position.0, start_position.1 + 1), visited);
-    area += new_area;
-    perimeter += new_perimeter;
-  } else {
-    perimeter += 1;
+  for offset in OFFSETS {
+    let new_x = start_position.0 as i64 + offset.0;
+    let new_y = start_position.1 as i64 + offset.1;
+    if new_x >= 0 && new_x < map[0].len() as i64 && new_y >= 0 && new_y < map.len() as i64 && map[new_y as usize][new_x as usize] == map[start_position.1][start_position.0] {
+      let (new_area, new_perimeter) = flood_fill(map, (new_x as usize, new_y as usize), visited);
+      area += new_area;
+      perimeter += new_perimeter;
+    } else {
+      perimeter += 1;
+    }
   }
   (area, perimeter)
 }

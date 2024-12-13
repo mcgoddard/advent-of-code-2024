@@ -1,4 +1,6 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
+
+use super::lib::OFFSETS;
 
 #[derive(Debug, Clone, Hash, Eq, PartialEq)]
 enum Direction {
@@ -29,106 +31,70 @@ fn flood_fill(map: &[Vec<char>], start_position: (usize, usize), visited: &mut H
   let mut area = 0;
   visited.insert(start_position);
   area += 1;
-  if start_position.0 >= 1 && map[start_position.1][start_position.0 - 1] == map[start_position.1][start_position.0] {
-    let new_area = flood_fill(map, (start_position.0 - 1, start_position.1), visited, sides);
-    area += new_area;
-  } else if !check_side(map, sides, start_position, Direction::Left) {
-    sides.insert((start_position.0, start_position.1, Direction::Left));
-  }
-  if start_position.1 >= 1 && map[start_position.1 - 1][start_position.0] == map[start_position.1][start_position.0] {
-    let new_area = flood_fill(map, (start_position.0, start_position.1 - 1), visited, sides);
-    area += new_area;
-  } else if !check_side(map, sides, start_position, Direction::Up) {
-    sides.insert((start_position.0, start_position.1, Direction::Up));
-  }
-  if start_position.0 < map[0].len() - 1 && map[start_position.1][start_position.0 + 1] == map[start_position.1][start_position.0] {
-    let new_area = flood_fill(map, (start_position.0 + 1, start_position.1), visited, sides);
-    area += new_area;
-  } else if !check_side(map, sides, start_position, Direction::Right) {
-    sides.insert((start_position.0, start_position.1, Direction::Right));
-  }
-  if start_position.1 < map.len() - 1 && map[start_position.1 + 1][start_position.0] == map[start_position.1][start_position.0] {
-    let new_area = flood_fill(map, (start_position.0, start_position.1 + 1), visited, sides);
-    area += new_area;
-  } else if !check_side(map, sides, start_position, Direction::Down) {
-    sides.insert((start_position.0, start_position.1, Direction::Down));
+  let offset_direction = HashMap::from([
+    ((0, -1), Direction::Up),
+    ((-1, 0), Direction::Left),
+    ((0, 1), Direction::Down),
+    ((1, 0), Direction::Right),
+  ]);
+  for offset in OFFSETS {
+    let new_x = start_position.0 as i64 + offset.0;
+    let new_y = start_position.1 as i64 + offset.1;
+    if new_x >= 0 && new_x < map[0].len() as i64 && new_y >= 0 && new_y < map.len() as i64 && map[new_y as usize][new_x as usize] == map[start_position.1][start_position.0]{
+      let new_area = flood_fill(map, (new_x as usize, new_y as usize), visited, sides);
+      area += new_area;
+    } else {
+      let direction = offset_direction.get(&offset).unwrap();
+      if !check_side(map, sides, start_position, direction) {
+        sides.insert((start_position.0, start_position.1, direction.clone()));
+      }
+    }
   }
   area
 }
 
-fn check_side(map: &[Vec<char>], sides: &HashSet<(usize, usize, Direction)>, position: (usize, usize), direction: Direction) -> bool {
-  if direction == Direction::Up {
-    for i in position.0 + 1..map[0].len() {
-      if map[position.1][i] != map[position.1][position.0] || (position.1 > 0 && map[position.1 - 1][i] == map[position.1][position.0]) {
+fn check_side(map: &[Vec<char>], sides: &HashSet<(usize, usize, Direction)>, position: (usize, usize), direction: &Direction) -> bool {
+  let direction_offset_map: HashMap<Direction, (i64, i64)> = HashMap::from([
+    (Direction::Up, (0, -1)),
+    (Direction::Left, (-1, 0)),
+    (Direction::Down, (0, 1)),
+    (Direction::Right, (1, 0)),
+  ]);
+  let offset = direction_offset_map.get(direction).unwrap();
+  let (position_index, max_position, max_other) = if direction == &Direction::Up || direction == &Direction::Down {
+    (position.0, map[0].len(), map.len())
+  } else {
+    (position.1, map.len(), map[0].len())
+  };
+  let offset_position = (position.0 as i64 + offset.0, position.1 as i64 + offset.1);
+  for i in position_index + 1..max_position {
+    if direction == &Direction::Up || direction == &Direction::Down {
+      if map[position.1][i] != map[position.1][position.0] || (offset_position.1 >= 0 && (offset_position.1 as usize) < max_other && map[offset_position.1 as usize][i] == map[position.1][position.0]) {
         break;
       }
       if sides.contains(&(i, position.1, direction.clone())) {
         return true;
       }
-    }
-    if position.0 > 0 {
-      for i in (0..position.0).rev() {
-        if map[position.1][i] != map[position.1][position.0] || (position.1 > 0 && map[position.1 - 1][i] == map[position.1][position.0]) {
-          break;
-        }
-        if sides.contains(&(i, position.1, direction.clone())) {
-          return true;
-        }
-      }
-    }
-  }
-  if direction == Direction::Down {
-    for i in position.0 + 1..map[0].len() {
-      if map[position.1][i] != map[position.1][position.0] || (position.1 < map.len() - 1 && map[position.1 + 1][i] == map[position.1][position.0]) {
-        break;
-      }
-      if sides.contains(&(i, position.1, direction.clone())) {
-        return true;
-      }
-    }
-    if position.0 > 0 {
-      for i in (0..position.0).rev() {
-        if map[position.1][i] != map[position.1][position.0] || (position.1 < map.len() - 1 && map[position.1 + 1][i] == map[position.1][position.0]) {
-          break;
-        }
-        if sides.contains(&(i, position.1, direction.clone())) {
-          return true;
-        }
-      }
-    }
-  }
-  if direction == Direction::Left {
-    for i in position.1 + 1..map.len() {
-      if map[i][position.0] != map[position.1][position.0] || (position.0 > 0 && map[i][position.0 - 1] == map[position.1][position.0]) {
+    } else {
+      if map[i][position.0] != map[position.1][position.0] || (offset_position.0 >= 0 && (offset_position.0 as usize) < max_other && map[i][offset_position.0 as usize] == map[position.1][position.0]) {
         break;
       }
       if sides.contains(&(position.0, i, direction.clone())) {
         return true;
       }
     }
-    if position.1 > 0 {
-      for i in (0..position.1).rev() {
-        if map[i][position.0] != map[position.1][position.0] || (position.0 > 0 && map[i][position.0 - 1] == map[position.1][position.0]) {
+  }
+  if position_index > 0 {
+    for i in (0..position_index).rev() {
+      if direction == &Direction::Up || direction == &Direction::Down {
+        if map[position.1][i] != map[position.1][position.0] || (offset_position.1 >= 0 && (offset_position.1 as usize) < max_other && map[offset_position.1 as usize][i] == map[position.1][position.0]) {
           break;
         }
-        if sides.contains(&(position.0, i, direction.clone())) {
+        if sides.contains(&(i, position.1, direction.clone())) {
           return true;
         }
-      }
-    }
-  }
-  if direction == Direction::Right {
-    for i in position.1 + 1..map.len() {
-      if map[i][position.0] != map[position.1][position.0] || (position.0 < map.len() - 1 && map[i][position.0 + 1] == map[position.1][position.0]) {
-        break;
-      }
-      if sides.contains(&(position.0, i, direction.clone())) {
-        return true;
-      }
-    }
-    if position.1 > 0 {
-      for i in (0..position.1).rev() {
-        if map[i][position.0] != map[position.1][position.0] || (position.0 < map.len() - 1 && map[i][position.0 + 1] == map[position.1][position.0]) {
+      } else {
+        if map[i][position.0] != map[position.1][position.0] || (offset_position.0 >= 0 && (offset_position.0 as usize) < max_other && map[i][offset_position.0 as usize] == map[position.1][position.0]) {
           break;
         }
         if sides.contains(&(position.0, i, direction.clone())) {
