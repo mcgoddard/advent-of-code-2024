@@ -1,21 +1,8 @@
 use std::collections::{HashMap, HashSet};
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone)]
-enum Direction {
-  Left,
-  Right,
-  Up,
-  Down,
-}
+use itertools::Itertools;
 
-#[derive(Debug, Hash, Eq, PartialEq, Clone)]
-enum Space {
-  Empty,
-  Wall,
-  BoxLeft,
-  BoxRight,
-  Robot,
-}
+use super::lib::{number_of_boxes, print_map, Direction, Space};
 
 pub fn part2(lines: &[String]) -> i64 {
   let mut map_complete = false;
@@ -100,10 +87,18 @@ pub fn part2(lines: &[String]) -> i64 {
           }
         } else {
           let mut seen: HashSet<(usize, usize)> = HashSet::new();
-          if can_move_vertical(&map, new_position, *offset, &mut seen) {
-            println!("Can move vertical {:?}", instruction);
-          } else {
-            println!("Cannot move vertical {:?}", instruction);
+          if let Some(move_set) = can_move_vertical(&map, new_position, *offset, &mut seen) {
+            let mut ordered_move = move_set.iter().sorted_by(|a, b| a.1.cmp(&b.1)).collect::<Vec<&(usize, usize)>>();
+            if instruction == Direction::Down {
+              ordered_move.reverse();
+            }
+            for position in ordered_move {
+              map[position.1 + offset.1 as usize][position.0] = map[position.1][position.0].clone();
+              map[position.1][position.0] = Space::Empty;
+            }
+            map[robot_position.1][robot_position.0] = Space::Empty;
+            map[new_position.1][new_position.0] = Space::Robot;
+            robot_position = new_position;
           }
           print_map(&map);
         }
@@ -122,75 +117,44 @@ pub fn part2(lines: &[String]) -> i64 {
   gps
 }
 
-fn print_map(map: &Vec<Vec<Space>>) {
-  for line in map {
-    for char in line {
-      print!("{}", match char {
-        Space::Empty => '.',
-        Space::Wall => '#',
-        Space::BoxLeft => '[',
-        Space::BoxRight => ']',
-        Space::Robot => '@',
-      });
-    }
-    println!();
-  }
-}
-
-fn number_of_boxes(map: &Vec<Vec<Space>>, start: (usize, usize), offset: (i64, i64)) -> Option<i64> {
-  let mut count = 1;
-  let mut still_box = true;
-  let mut position = start;
-  while still_box {
-    if position.0 < 1 && offset.0 < 0 || position.0 >= map[0].len() - 1 && offset.0 > 0 || position.1 < 1 && offset.1 < 0 || position.1 >= map.len() - 1 && offset.1 > 0 {
-      still_box = false;
-      continue;
-    }
-    let new_position = (((position.0 as i64) + offset.0) as usize, ((position.1 as i64) + offset.1) as usize);
-    match map[new_position.1][new_position.0] {
-      Space::Wall => return None,
-      Space::Empty => still_box = false,
-      Space::BoxLeft | Space::BoxRight => {
-        count += 1;
-        position = new_position;
-      },
-      Space::Robot => panic!("Found robot in box path"),
-    }
-  }
-  Some(count)
-}
-
-fn can_move_vertical(map: &Vec<Vec<Space>>, position: (usize, usize), offset: (i64, i64), seen: &mut HashSet<(usize, usize)>) -> bool {
+fn can_move_vertical(map: &Vec<Vec<Space>>, position: (usize, usize), offset: (i64, i64), seen: &mut HashSet<(usize, usize)>) -> Option<HashSet<(usize, usize)>> {
   if seen.contains(&position) {
     panic!("Already checked position {:?} {:?}", position, seen);
   }
-  seen.insert(position);
   if position.0 < 1 && offset.0 < 0 || position.0 >= map[0].len() - 1 && offset.0 > 0 || position.1 < 1 && offset.1 < 0 || position.1 >= map.len() - 1 && offset.1 > 0 {
-    return false;
+    return None;
   }
   let new_position = (((position.0 as i64) + offset.0) as usize, ((position.1 as i64) + offset.1) as usize);
   match map[position.1][position.0] {
-    Space::Wall => false,
-    Space::Empty => true,
+    Space::Wall => None,
+    Space::Empty => Some(seen.clone()),
     Space::BoxLeft => {
+      seen.insert(position);
       let mut seen = seen.clone();
       let above = can_move_vertical(map, new_position, offset, &mut seen);
       let right = if seen.contains(&(position.0 + 1, position.1)) {
-        true
+        Some(seen.clone())
       } else {
         can_move_vertical(map, (position.0 + 1, position.1), offset, &mut seen)
       };
-      above && right
+      if let (Some(above), Some(right)) = (above, right) {
+        return Some(above.union(&right).cloned().collect());
+      }
+      return None;
     },
     Space::BoxRight => {
+      seen.insert(position);
       let mut seen = seen.clone();
       let above = can_move_vertical(map, new_position, offset, &mut seen);
       let left = if seen.contains(&(position.0 - 1, position.1)) {
-        true
+        Some(seen.clone())
       } else {
         can_move_vertical(map, (position.0 - 1, position.1), offset, &mut seen)
       };
-      above && left
+      if let (Some(above), Some(left)) = (above, left) {
+        return Some(above.union(&left).cloned().collect());
+      }
+      return None;
     },
     Space::Robot => panic!("Found robot in box path"),
   }
