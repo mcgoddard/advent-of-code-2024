@@ -2,7 +2,7 @@ use super::lib::parse_machines;
 
 pub fn part1(lines: &[String]) -> i64 {
   let machines = parse_machines(lines, 0);
-  let tokens = machines.iter().map(|m| {
+  let tokens = machines.iter().filter_map(|m| {
     let mut valid_tokens = vec![];
     for i in 0..100 {
       for j in 0..100 {
@@ -12,6 +12,6 @@ pub fn part1(lines: &[String]) -> i64 {
       }
     }
     valid_tokens.into_iter().min()
-  }).filter(|t| t.is_some()).map(|t| t.unwrap()).collect::<Vec<i64>>();
+  }).collect::<Vec<i64>>();
   tokens.iter().sum()
 }

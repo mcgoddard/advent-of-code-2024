@@ -1,68 +1,11 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::HashSet;
 
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-enum Space {
-  Empty,
-  Wall,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-enum Facing {
-  North,
-  East,
-  South,
-  West,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-struct Node {
-  step: Step,
-  parent: Option<Box<Node>>,
-  g: i64,
-  h: i64,
-  f: i64,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-struct Step {
-  position: (i64, i64),
-  facing: Facing,
-}
+use super::lib::{get_facing_map, get_start_node, parse_input, Node, Space, Step};
 
 pub fn part2(lines: &[String]) -> i64 {
-  let mut start = (0, 0);
-  let mut end = (0, 0);
-  let map = lines.iter().enumerate().map(|(y, l)| {
-    l.chars().enumerate().map(|(x, c)| match c {
-      '.' => Space::Empty,
-      '#' => Space::Wall,
-      'S' => {
-        start = (x as i64, y as i64);
-        Space::Empty
-      },
-      'E' => {
-        end = (x as i64, y as i64);
-        Space::Empty
-      },
-      _ => panic!("Invalid character in map"),
-    }).collect::<Vec<Space>>()
-  }).collect::<Vec<Vec<Space>>>();
-  let start_node = Node {
-    step: Step {
-      position: start,
-      facing: Facing::East,
-    },
-    parent: None,
-    g: 0,
-    h: 0,
-    f: 0,
-  };
-  let facing_map: HashMap<(i64, i64), Facing> = HashMap::from([
-    ((0, -1), Facing::North),
-    ((1, 0), Facing::East),
-    ((0, 1), Facing::South),
-    ((-1, 0), Facing::West),
-  ]);
+  let (map, start, end) = parse_input(lines);
+  let start_node = get_start_node(start);
+  let facing_map = get_facing_map();
   let mut open_list = vec![start_node];
   let mut closed_list = vec![];
   let mut lowest_scoring_path_positions: HashSet<(i64, i64)> = HashSet::new();
@@ -117,7 +60,7 @@ pub fn part2(lines: &[String]) -> i64 {
       if map[new_position.1 as usize][new_position.0 as usize] == Space::Wall {
         continue;
       }
-      let new_facing = facing_map.get(&offset).unwrap().clone();
+      let new_facing = facing_map.get(offset).unwrap().clone();
       let new_g = if current_node.clone().step.facing == new_facing { current_node.clone().g + 1 } else { current_node.clone().g + 1001 };
       let new_h = (new_position.0 - end.0).pow(2) + (new_position.1 - end.1).pow(2);
       let new_node = Node {
@@ -130,6 +73,7 @@ pub fn part2(lines: &[String]) -> i64 {
         h: new_h,
         f: new_g + new_h,
       };
+      // Allow children to be added to open_list if they have the same step but an equal or lower g score for reevaluation (i.e. to find other optimal paths)
       if closed_list.iter().any(|n| n.step == new_node.step && new_node.g > n.g) {
         continue;
       }

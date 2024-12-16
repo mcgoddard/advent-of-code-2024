@@ -15,7 +15,7 @@ pub enum Space {
   Robot,
 }
 
-pub fn number_of_boxes(map: &Vec<Vec<Space>>, start: (usize, usize), offset: (i64, i64)) -> Option<i64> {
+pub fn number_of_boxes(map: &[Vec<Space>], start: (usize, usize), offset: (i64, i64)) -> Option<i64> {
   let mut count = 1;
   let mut still_box = true;
   let mut position = start;

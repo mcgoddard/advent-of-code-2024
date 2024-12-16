@@ -73,7 +73,6 @@ pub fn part2(lines: &[String]) -> i64 {
         if instruction == Direction::Left || instruction == Direction::Right {
           let number_of_boxes = number_of_boxes(&map, new_position, *offset);
           if let Some(number_of_boxes) = number_of_boxes {
-            let number_of_boxes = number_of_boxes;
             map[robot_position.1][robot_position.0] = Space::Empty;
             map[new_position.1][new_position.0] = Space::Robot;
             for i in 1..=number_of_boxes {
@@ -140,7 +139,7 @@ fn can_move_vertical(map: &Vec<Vec<Space>>, position: (usize, usize), offset: (i
       if let (Some(above), Some(right)) = (above, right) {
         return Some(above.union(&right).cloned().collect());
       }
-      return None;
+      None
     },
     Space::BoxRight => {
       seen.insert(position);
@@ -154,7 +153,7 @@ fn can_move_vertical(map: &Vec<Vec<Space>>, position: (usize, usize), offset: (i
       if let (Some(above), Some(left)) = (above, left) {
         return Some(above.union(&left).cloned().collect());
       }
-      return None;
+      None
     },
     Space::Robot => panic!("Found robot in box path"),
   }

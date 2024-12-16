@@ -44,7 +44,7 @@ fn flood_fill(map: &[Vec<char>], start_position: (usize, usize), visited: &mut H
       let new_area = flood_fill(map, (new_x as usize, new_y as usize), visited, sides);
       area += new_area;
     } else {
-      let direction = offset_direction.get(&offset).unwrap();
+      let direction = offset_direction.get(offset).unwrap();
       if !check_side(map, sides, start_position, direction) {
         sides.insert((start_position.0, start_position.1, direction.clone()));
       }

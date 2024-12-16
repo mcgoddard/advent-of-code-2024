@@ -1,68 +1,9 @@
-use std::collections::HashMap;
-
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-enum Space {
-  Empty,
-  Wall,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-enum Facing {
-  North,
-  East,
-  South,
-  West,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-struct Node {
-  step: Step,
-  parent: Option<Box<Node>>,
-  g: i64,
-  h: i64,
-  f: i64,
-}
-
-#[derive(Debug, PartialEq, Eq, Clone, Hash)]
-struct Step {
-  position: (i64, i64),
-  facing: Facing,
-}
+use super::lib::{get_facing_map, get_start_node, parse_input, Node, Space, Step};
 
 pub fn part1(lines: &[String]) -> i64 {
-  let mut start = (0, 0);
-  let mut end = (0, 0);
-  let map = lines.iter().enumerate().map(|(y, l)| {
-    l.chars().enumerate().map(|(x, c)| match c {
-      '.' => Space::Empty,
-      '#' => Space::Wall,
-      'S' => {
-        start = (x as i64, y as i64);
-        Space::Empty
-      },
-      'E' => {
-        end = (x as i64, y as i64);
-        Space::Empty
-      },
-      _ => panic!("Invalid character in map"),
-    }).collect::<Vec<Space>>()
-  }).collect::<Vec<Vec<Space>>>();
-  let start_node = Node {
-    step: Step {
-      position: start,
-      facing: Facing::East,
-    },
-    parent: None,
-    g: 0,
-    h: 0,
-    f: 0,
-  };
-  let facing_map: HashMap<(i64, i64), Facing> = HashMap::from([
-    ((0, -1), Facing::North),
-    ((1, 0), Facing::East),
-    ((0, 1), Facing::South),
-    ((-1, 0), Facing::West),
-  ]);
+  let (map, start, end) = parse_input(lines);
+  let start_node = get_start_node(start);
+  let facing_map = get_facing_map();
   let mut open_list = vec![start_node];
   let mut closed_list = vec![];
   // A star algorithm to find the shortest path to the end
@@ -103,7 +44,7 @@ pub fn part1(lines: &[String]) -> i64 {
       if map[new_position.1 as usize][new_position.0 as usize] == Space::Wall {
         continue;
       }
-      let new_facing = facing_map.get(&offset).unwrap().clone();
+      let new_facing = facing_map.get(offset).unwrap().clone();
       let new_g = if current_node.step.facing == new_facing { current_node.g + 1 } else { current_node.g + 1001 };
       let new_h = (new_position.0 - end.0).pow(2) + (new_position.1 - end.1).pow(2);
       let new_node = Node {
