@@ -12,8 +12,12 @@ use crate::day_10;
 use crate::day_11;
 use crate::day_12;
 use crate::day_13;
+<<<<<<< Updated upstream
 use crate::day_15;
 use crate::day_16;
+=======
+use crate::day_14;
+>>>>>>> Stashed changes
 
 pub struct SolverWrapper {
   pub solver: Box<dyn SolverTrait>,
@@ -35,8 +39,12 @@ impl SolverWrapper {
       11 => Box::new(day_11::Solver),
       12 => Box::new(day_12::Solver),
       13 => Box::new(day_13::Solver),
+<<<<<<< Updated upstream
       15 => Box::new(day_15::Solver),
       16 => Box::new(day_16::Solver),
+=======
+      14 => Box::new(day_14::Solver),
+>>>>>>> Stashed changes
       _ => panic!("Invalid day {}", day),
     };
 

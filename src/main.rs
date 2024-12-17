@@ -11,8 +11,12 @@ mod day_10;
 mod day_11;
 mod day_12;
 mod day_13;
+<<<<<<< Updated upstream
 mod day_15;
 mod day_16;
+=======
+mod day_14;
+>>>>>>> Stashed changes
 mod solverwrapper;
 
 use advent_of_code_2024::read_lines;
