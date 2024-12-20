@@ -22,11 +22,11 @@ pub fn part1(lines: &[String]) -> i64 {
   let final_robots = robots.map(|r| {
     let mut new_x = (r.position.0 + (r.velocity.0 * seconds)) % width;
     if new_x < 0 {
-      new_x = width + new_x;
+      new_x += width;
     }
     let mut new_y = (r.position.1 + (r.velocity.1 * seconds)) % height;
     if new_y < 0 {
-      new_y = height + new_y;
+      new_y += height;
     }
     Robot {
       position: (new_x, new_y),
@@ -35,21 +35,23 @@ pub fn part1(lines: &[String]) -> i64 {
   }).collect::<Vec<Robot>>();
   let mut quad_scores = vec![0,0,0,0];
   for r in final_robots {
-    println!("{:?}", r);
-    if r.position.0 < width / 2 {
-      if r.position.1 < height / 2 {
-        quad_scores[0] += 1;
-      } else if r.position.1 > height / 2 {
-        quad_scores[1] += 1;
-      }
-    } else if r.position.0 > width / 2 {
-      if r.position.1 < height / 2 {
-        quad_scores[2] += 1;
-      } else if r.position.1 > height / 2 {
-        quad_scores[3] += 1;
-      }
+    match r.position.0.cmp(&(width / 2)) {
+      std::cmp::Ordering::Less => {
+        match r.position.1.cmp(&(height / 2)) {
+          std::cmp::Ordering::Less => quad_scores[0] += 1,
+          std::cmp::Ordering::Greater => quad_scores[1] += 1,
+          _ => (),
+        }
+      },
+      std::cmp::Ordering::Greater => {
+        match r.position.1.cmp(&(height / 2)) {
+          std::cmp::Ordering::Less => quad_scores[2] += 1,
+          std::cmp::Ordering::Greater => quad_scores[3] += 1,
+          _ => (),
+        }
+      },
+      _ => (),
     }
   }
-  println!("{:?}", quad_scores);
-  quad_scores.iter().fold(1, |acc, s| acc * s)
+  quad_scores.iter().product()
 }

@@ -23,11 +23,11 @@ pub fn part2(lines: &[String]) -> i64 {
     let new_robots = robots.iter().map(|r| {
       let mut new_x = (r.position.0 + r.velocity.0) % width;
       if new_x < 0 {
-        new_x = width + new_x;
+        new_x += width;
       }
       let mut new_y = (r.position.1 + r.velocity.1) % height;
       if new_y < 0 {
-        new_y = height + new_y;
+        new_y += height;
       }
       Robot {
         position: (new_x, new_y),
@@ -65,7 +65,7 @@ pub fn part2(lines: &[String]) -> i64 {
           print!("0");
         }
       }
-      println!("");
+      println!();
     }
     robots = new_robots;
   }

@@ -40,10 +40,10 @@ pub fn part1(lines: &[String]) -> i64 {
     match opcode {
       Opcode::Adv => {
         let combo = get_combo(operand, a, b, c);
-        a = a / (2 as i64).pow(combo as u32);
+        a /= (2_i64).pow(combo as u32);
       },
       Opcode::Bxl => {
-        b = b ^ operand;
+        b ^= operand;
       },
       Opcode::Bst => {
         b = get_combo(operand, a, b, c) % 8;
@@ -55,7 +55,7 @@ pub fn part1(lines: &[String]) -> i64 {
         }
       },
       Opcode::Bxc => {
-        b = b ^ c;
+        b ^= c;
       },
       Opcode::Out => {
         let combo = get_combo(operand, a, b, c);
@@ -63,11 +63,11 @@ pub fn part1(lines: &[String]) -> i64 {
       },
       Opcode::Bdv => {
         let combo = get_combo(operand, a, b, c);
-        b = a / (2 as i64).pow(combo as u32);
+        b = a / (2_i64).pow(combo as u32);
       },
       Opcode::Csv => {
         let combo = get_combo(operand, a, b, c);
-        c = a / (2 as i64).pow(combo as u32);
+        c = a / (2_i64).pow(combo as u32);
       },
     }
     instruction_pointer += 2;
