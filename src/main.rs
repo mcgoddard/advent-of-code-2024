@@ -17,6 +17,7 @@ mod day_16;
 mod day_17;
 mod day_18;
 mod day_19;
+mod day_20;
 mod solverwrapper;
 
 use advent_of_code_2024::read_lines;
