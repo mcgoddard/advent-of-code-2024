@@ -33,7 +33,7 @@ pub fn part1(lines: &[String]) -> i64 {
       velocity: r.velocity,
     }
   }).collect::<Vec<Robot>>();
-  let mut quad_scores = vec![0,0,0,0];
+  let mut quad_scores = [0,0,0,0];
   for r in final_robots {
     match r.position.0.cmp(&(width / 2)) {
       std::cmp::Ordering::Less => {

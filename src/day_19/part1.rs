@@ -8,7 +8,7 @@ pub fn part1(lines: &[String]) -> i64 {
   for design in desired_designs {
     let mut open: HashSet<Vec<Colors>> = HashSet::from([vec![]]);
     let mut found = false;
-    while !found && open.len() > 0 {
+    while !found && !open.is_empty() {
       let mut next: HashSet<Vec<Colors>> = HashSet::new();
       for o in open.iter() {
         for available in available_towels.iter() {
