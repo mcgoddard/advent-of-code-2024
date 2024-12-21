@@ -1,25 +1,9 @@
 use std::collections::{HashMap, HashSet};
 
-use super::lib::{a_star, Space};
+use super::lib::{a_star, parse_input};
 
 pub fn part1(lines: &[String]) -> i64 {
-  let mut start = (0, 0);
-  let mut end = (0, 0);
-  let map = lines.iter().enumerate().map(|(y, line)| {
-    line.chars().enumerate().map(|(x, c)| match c {
-      '#' => Space::Wall,
-      '.' => Space::Empty,
-      'S' => {
-        start = (x as i64, y as i64);
-        Space::Empty
-      },
-      'E' => {
-        end = (x as i64, y as i64);
-        Space::Empty
-      },
-      _ => panic!("Invalid space"),
-    }).collect::<Vec<Space>>()
-  }).collect::<Vec<Vec<Space>>>();
+  let (map, start, end) = parse_input(lines);
   let original_path = [vec![start], a_star(&map, start, end).unwrap()].concat();
   let path_set: HashSet<(i64, i64)> = HashSet::from_iter(original_path.iter().cloned());
   let mut cheats_count: HashMap<usize, i64> = HashMap::new();

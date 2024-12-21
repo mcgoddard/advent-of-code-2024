@@ -13,6 +13,27 @@ pub struct Node {
   pub f: i64,
 }
 
+pub fn parse_input(lines: &[String]) -> (Vec<Vec<Space>>, (i64, i64), (i64, i64)) {
+  let mut start = (0, 0);
+  let mut end = (0, 0);
+  let map = lines.iter().enumerate().map(|(y, line)| {
+    line.chars().enumerate().map(|(x, c)| match c {
+      '#' => Space::Wall,
+      '.' => Space::Empty,
+      'S' => {
+        start = (x as i64, y as i64);
+        Space::Empty
+      },
+      'E' => {
+        end = (x as i64, y as i64);
+        Space::Empty
+      },
+      _ => panic!("Invalid space"),
+    }).collect::<Vec<Space>>()
+  }).collect::<Vec<Vec<Space>>>();
+  (map, start, end)
+}
+
 pub fn a_star(map: &[Vec<Space>], start: (i64, i64), target: (i64, i64)) -> Option<Vec<(i64, i64)>> {
   let mut open_list = vec![Node {
     position: start,
