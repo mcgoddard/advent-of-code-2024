@@ -26,7 +26,7 @@ pub fn part2(lines: &[String]) -> i64 {
 
 #[memoize]
 fn count_combinations(root: TrieNode, design: Vec<Colors>) -> i64 {
-  let mut current = root.clone();
+  let mut current = &mut root.clone();
   let n = design.len();
   let mut combinations = 0;
 
@@ -36,8 +36,8 @@ fn count_combinations(root: TrieNode, design: Vec<Colors>) -> i64 {
 
   for i in 0..n {
     let next = color_index(&design[i]);
-    if let Some(next_child) = &current.children[next] {
-      current = next_child.clone();
+    if let Some(next_child) = &mut current.children[next] {
+      current = next_child;
     } else {
       return combinations;
     }
