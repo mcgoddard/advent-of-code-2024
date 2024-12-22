@@ -13,7 +13,9 @@ pub struct Node {
   pub f: i64,
 }
 
-pub fn parse_input(lines: &[String]) -> (Vec<Vec<Space>>, (i64, i64), (i64, i64)) {
+type Inputs = (Vec<Vec<Space>>, (i64, i64), (i64, i64));
+
+pub fn parse_input(lines: &[String]) -> Inputs {
   let mut start = (0, 0);
   let mut end = (0, 0);
   let map = lines.iter().enumerate().map(|(y, line)| {
