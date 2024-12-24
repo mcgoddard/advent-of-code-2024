@@ -6,7 +6,7 @@ struct Robot {
   pub velocity: Point,
 }
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let parts = lines.iter().map(|l| l.split(" ").collect::<Vec<&str>>()).collect::<Vec<Vec<&str>>>();
   let mut robots = parts.iter().map(|p| {
     let positions: Vec<i64> = p[0].replace("p=", "").split(",").map(|v| v.parse().unwrap()).collect();
@@ -54,7 +54,7 @@ pub fn part2(lines: &[String]) -> i64 {
       }
     }
     if mirrored {
-      return s;
+      return s.to_string();
     }
     println!("{:?}", s);
     for line in map {

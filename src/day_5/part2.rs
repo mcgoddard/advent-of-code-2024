@@ -1,7 +1,7 @@
 use std::collections::{HashMap, HashSet};
 use super::lib::{check_update, parse_rules_and_updates};
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let (rules_hash, updates) = parse_rules_and_updates(lines);
   let invalid_updates = updates.iter().filter(|u| !check_update(&rules_hash, u)).cloned().collect::<Vec<Vec<i64>>>();
   let fixed_updates = invalid_updates.iter().map(|u| {
@@ -12,7 +12,7 @@ pub fn part2(lines: &[String]) -> i64 {
     new_update
   }).collect::<Vec<Vec<i64>>>();
   let middle_values = fixed_updates.iter().map(|u| u[u.len() / 2]).collect::<Vec<i64>>();
-  middle_values.iter().sum()
+  middle_values.iter().sum::<i64>().to_string()
 }
 
 fn fix_update(rules_hash: &HashMap<i64, HashSet<i64>>, update: &[i64]) -> Vec<i64> {

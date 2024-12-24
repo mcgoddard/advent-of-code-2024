@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 
 use super::lib::{a_star, parse_input};
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let (map, start, end) = parse_input(lines);
   let original_path = [vec![start], a_star(&map, start, end).unwrap()].concat();
   let path_set: HashSet<(i64, i64)> = HashSet::from_iter(original_path.iter().cloned());
@@ -23,7 +23,7 @@ pub fn part2(lines: &[String]) -> i64 {
       }
     }
   }
-  cheats_count.iter().filter(|(saved, _)| **saved >= 100).fold(0, |acc, (_, count)| acc + count)
+  cheats_count.iter().filter(|(saved, _)| **saved >= 100).fold(0, |acc, (_, count)| acc + count).to_string()
 }
 
 fn within_n(point: (i64, i64), n: i64) -> Vec<(i64, i64)> {

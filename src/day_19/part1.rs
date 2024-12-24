@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use super::lib::{parse_input, Colors};
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let (available_towels, desired_designs) = parse_input(lines);
   let mut possible_designed = 0;
   for design in desired_designs {
@@ -30,5 +30,5 @@ pub fn part1(lines: &[String]) -> i64 {
       open = next;
     }
   }
-  possible_designed
+  possible_designed.to_string()
 }

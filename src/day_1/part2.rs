@@ -1,4 +1,4 @@
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let split = lines.iter().map(|line| line.split_whitespace().collect()).collect::<Vec<Vec<&str>>>();
   let left = split.iter().map(|line| line[0].parse::<i64>().unwrap()).collect::<Vec<i64>>();
   let right = split.iter().map(|line| line[1].parse::<i64>().unwrap()).collect::<Vec<i64>>();
@@ -16,5 +16,5 @@ pub fn part2(lines: &[String]) -> i64 {
       similarity_score += (k * right_v) * left_v;
     }
   }
-  similarity_score
+  similarity_score.to_string()
 }

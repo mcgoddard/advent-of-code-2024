@@ -1,6 +1,6 @@
 use super::lib::minimum_length_sequence;
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let mut result = 0;
   for line in lines {
     let digit: i64 = line[0..3].parse().unwrap();
@@ -8,5 +8,5 @@ pub fn part2(lines: &[String]) -> i64 {
     let complexity = digit * minimum_length;
     result += complexity;
   }
-  result
+  result.to_string()
 }

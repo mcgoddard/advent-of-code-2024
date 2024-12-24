@@ -1,6 +1,6 @@
 use super::lib::next_secret;
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let buyers = lines.iter().map(|l| l.parse().unwrap()).collect::<Vec<i64>>();
   let results = buyers.iter().map(|b| {
     let mut secret = *b;
@@ -9,5 +9,5 @@ pub fn part1(lines: &[String]) -> i64 {
     }
     secret
   }).collect::<Vec<i64>>();
-  results.iter().sum()
+  results.iter().sum::<i64>().to_string()
 }

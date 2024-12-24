@@ -1,6 +1,6 @@
 use std::collections::HashSet;
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let mut result = 0;
   let surrounding_chars: HashSet<char> = HashSet::from_iter(vec!['M', 'S']);
   let chars = lines.iter().map(|l| l.chars().collect::<Vec<char>>()).collect::<Vec<Vec<char>>>();
@@ -13,5 +13,5 @@ pub fn part2(lines: &[String]) -> i64 {
       }
     }
   }
-  result
+  result.to_string()
 }

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use super::lib::{number_of_boxes, Direction, Space};
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let mut map_complete = false;
   let mut map = vec![];
   let mut instructions = vec![];
@@ -74,5 +74,5 @@ pub fn part1(lines: &[String]) -> i64 {
       }
     }
   }
-  gps
+  gps.to_string()
 }

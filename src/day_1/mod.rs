@@ -6,11 +6,11 @@ mod part2;
 pub struct Solver;
 
 impl SolverTrait for Solver {
-  fn part_1(&self, lines: &[String]) -> i64 {
+  fn part_1(&self, lines: &[String]) -> String {
     part1::part1(lines)
   }
 
-  fn part_2(&self, lines: &[String]) -> i64 {
+  fn part_2(&self, lines: &[String]) -> String {
     part2::part2(lines)
   }
 }

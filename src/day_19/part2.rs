@@ -8,7 +8,7 @@ struct TrieNode {
   pub word_end: bool,
 }
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let (available_towels, desired_designs) = parse_input(lines);
   let mut root = TrieNode {
     children: vec![None; 5],
@@ -21,7 +21,7 @@ pub fn part2(lines: &[String]) -> i64 {
   for design in desired_designs {
     possible_count += count_combinations(root.clone(), design);
   }
-  possible_count
+  possible_count.to_string()
 }
 
 #[memoize]

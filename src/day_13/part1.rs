@@ -1,6 +1,6 @@
 use super::lib::parse_machines;
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let machines = parse_machines(lines, 0);
   let tokens = machines.iter().filter_map(|m| {
     let mut valid_tokens = vec![];
@@ -13,5 +13,5 @@ pub fn part1(lines: &[String]) -> i64 {
     }
     valid_tokens.into_iter().min()
   }).collect::<Vec<i64>>();
-  tokens.iter().sum()
+  tokens.iter().sum::<i64>().to_string()
 }

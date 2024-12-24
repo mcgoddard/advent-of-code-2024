@@ -1,6 +1,6 @@
 use regex::Regex;
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let re = Regex::new(r"mul\(([0-9]+),([0-9]+)\)").unwrap();
   let mut full_line = lines[0].to_owned();
   for line in lines.iter().skip(1) {
@@ -13,5 +13,5 @@ pub fn part2(lines: &[String]) -> i64 {
       result += first.parse::<i64>().unwrap() * second.parse::<i64>().unwrap();
     }
   }
-  result
+  result.to_string()
 }

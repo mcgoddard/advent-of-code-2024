@@ -10,7 +10,7 @@ enum Direction {
   Right,
 }
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let chars = lines.iter().map(|l| l.chars().collect()).collect::<Vec<Vec<char>>>();
   let mut visited: HashSet<(usize, usize)> = HashSet::new();
   let mut result = 0;
@@ -21,7 +21,7 @@ pub fn part2(lines: &[String]) -> i64 {
       result += area * sides_set.len() as i64;
     }
   }
-  result
+  result.to_string()
 }
 
 fn flood_fill(map: &[Vec<char>], start_position: (usize, usize), visited: &mut HashSet<(usize, usize)>, sides: &mut HashSet<(usize, usize, Direction)>) -> i64 {

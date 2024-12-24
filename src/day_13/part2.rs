@@ -1,6 +1,6 @@
 use super::lib::parse_machines;
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let machines = parse_machines(lines, 10000000000000);
   let tokens = machines.iter().map(|m| {
     let determinant = m.a.0 * m.b.1 - m.a.1 * m.b.0;
@@ -14,5 +14,5 @@ pub fn part2(lines: &[String]) -> i64 {
         (0, 0)
     }
   }).map(|t| t.0 * 3 + t.1).collect::<Vec<i64>>();
-  tokens.iter().sum()
+  tokens.iter().sum::<i64>().to_string()
 }

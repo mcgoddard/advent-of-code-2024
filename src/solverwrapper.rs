@@ -59,7 +59,7 @@ impl SolverWrapper {
     Self { solver }
   }
 
-  pub fn solve(&self, part: u8, lines: &[String]) -> i64 {
+  pub fn solve(&self, part: u8, lines: &[String]) -> String {
     match part {
       1 => self.solver.part_1(lines),
       2 => self.solver.part_2(lines),

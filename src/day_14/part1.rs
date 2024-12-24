@@ -6,7 +6,7 @@ struct Robot {
   pub velocity: Point,
 }
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let parts = lines.iter().map(|l| l.split(" ").collect::<Vec<&str>>()).collect::<Vec<Vec<&str>>>();
   let robots = parts.iter().map(|p| {
     let positions: Vec<i64> = p[0].replace("p=", "").split(",").map(|v| v.parse().unwrap()).collect();
@@ -53,5 +53,5 @@ pub fn part1(lines: &[String]) -> i64 {
       _ => (),
     }
   }
-  quad_scores.iter().product()
+  quad_scores.iter().product::<i64>().to_string()
 }

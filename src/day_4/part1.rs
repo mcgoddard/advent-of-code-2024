@@ -1,6 +1,6 @@
 use regex::Regex;
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let re = Regex::new(r".*?(XMAS).*?").unwrap();
   let reverse_re = Regex::new(r".*?(SAMX).*?").unwrap();
   let mut result = 0;
@@ -20,7 +20,7 @@ pub fn part1(lines: &[String]) -> i64 {
     result += re.captures_iter(line).count() as i64;
     result += reverse_re.captures_iter(line).count() as i64;
   }
-  result
+  result.to_string()
 }
 
 fn get_verticals(vector: &[String]) -> Vec<String> {

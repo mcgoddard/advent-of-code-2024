@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use super::lib::{get_facing_map, get_start_node, parse_input, Node, Space, Step};
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let (map, start, end) = parse_input(lines);
   let start_node = get_start_node(start);
   let facing_map = get_facing_map();
@@ -89,5 +89,5 @@ pub fn part2(lines: &[String]) -> i64 {
     open_list.sort_by(|a, b| a.f.cmp(&b.f));
   }
   lowest_scoring_path_positions.insert(start);
-  lowest_scoring_path_positions.len() as i64
+  lowest_scoring_path_positions.len().to_string()
 }

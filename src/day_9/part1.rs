@@ -2,7 +2,7 @@ use std::cmp::Ordering;
 
 use super::lib::{parse_blocks, Blocks, Empty, File};
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let (mut blocks, _max_file_num, total_empty) = parse_blocks(lines);
   if let Blocks::File(_) = blocks[blocks.len() - 1] {
     blocks.push(Blocks::Empty(Empty {
@@ -83,7 +83,7 @@ pub fn part1(lines: &[String]) -> i64 {
       },
     }
   }
-  get_checksum(&blocks)
+  get_checksum(&blocks).to_string()
 }
 
 fn get_checksum(blocks: &Vec<Blocks>) -> i64 {

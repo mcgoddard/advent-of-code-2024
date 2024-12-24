@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use super::lib::{get_visited, parse_input, Direction, Space};
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let (start_position, start_direction, map) = parse_input(lines);
   let mut visited = get_visited(start_position, &start_direction, &map);
   visited.remove(&start_position);
@@ -14,7 +14,7 @@ pub fn part2(lines: &[String]) -> i64 {
     new_map[*y as usize][*x as usize] = Space::Blocked;
     is_cycle(start_position, &start_direction, &new_map)
   }).filter(|v| *v).collect::<Vec<bool>>();
-  valid_positions.len() as i64
+  valid_positions.len().to_string()
 }
 
 fn is_cycle(start_position: (i64, i64), start_direction: &Direction, map: &[Vec<Space>]) -> bool {

@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 
 use super::lib::NetworkSet;
 
-pub fn part1(lines: &[String]) -> i64 {
+pub fn part1(lines: &[String]) -> String {
   let mut connection_maps = HashMap::new();
   lines.iter().for_each(|l| {
     let parts = l.split("-").collect::<Vec<&str>>();
@@ -20,5 +20,5 @@ pub fn part1(lines: &[String]) -> i64 {
       });
     });
   });
-  three_sets.iter().filter(|s| s.0.iter().any(|c| c.starts_with("t"))).count() as i64
+  three_sets.iter().filter(|s| s.0.iter().any(|c| c.starts_with("t"))).count().to_string()
 }

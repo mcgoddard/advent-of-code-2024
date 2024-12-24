@@ -1,6 +1,6 @@
 use super::lib::run_program;
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let program = lines[4].replace("Program: ", "").split(",").map(|v| v.parse().unwrap()).collect::<Vec<i64>>();
   let mut a = 0;
   let mut j: i64 = 1;
@@ -27,6 +27,6 @@ pub fn part2(lines: &[String]) -> i64 {
     a += found_i;
     i_start = 0;
   }
-  a
+  a.to_string()
 }
 

@@ -2,7 +2,7 @@ use std::collections::HashSet;
 
 use super::lib::{Space, a_star};
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let coordinates = lines.iter().map(|l| l.split(",").map(|s| s.parse().unwrap()).collect()).collect::<Vec<Vec<usize>>>();
   let mut map = vec![];
   let width = 71;
@@ -25,6 +25,5 @@ pub fn part2(lines: &[String]) -> i64 {
       break;
     }
   }
-  println!("First unsuccessful coordinate: {:?}", first_unsuccessful_coordinate);
-  0
+  format!("{},{}", first_unsuccessful_coordinate.0, first_unsuccessful_coordinate.1)
 }

@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use super::lib::next_secret;
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let buyers = lines.iter().map(|l| l.parse().unwrap()).collect::<Vec<i64>>();
   let results = buyers.iter().map(|b| {
     let mut secrets = vec![];
@@ -31,6 +31,6 @@ pub fn part2(lines: &[String]) -> i64 {
       max = *v;
     }
   }
-  max
+  max.to_string()
 }
 

@@ -4,7 +4,7 @@ use itertools::Itertools;
 
 use super::lib::{get_antinode, parse_antennas};
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let antenna_map = parse_antennas(lines);
   let mut antinodes: HashSet<(i64, i64)> = HashSet::new();
   for (_, positions) in antenna_map.iter() {
@@ -31,5 +31,5 @@ pub fn part2(lines: &[String]) -> i64 {
       }
     }
   }
-  antinodes.len() as i64
+  antinodes.len().to_string()
 }

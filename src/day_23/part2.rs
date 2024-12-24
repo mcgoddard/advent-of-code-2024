@@ -2,7 +2,7 @@ use std::collections::{HashMap, HashSet};
 
 use itertools::Itertools;
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let mut connection_maps = HashMap::new();
   lines.iter().for_each(|l| {
     let parts = l.split("-").collect::<Vec<&str>>();
@@ -22,6 +22,5 @@ pub fn part2(lines: &[String]) -> i64 {
   });
   let sorted = connected.iter().sorted_by(|a, b| b.len().cmp(&a.len())).collect::<Vec<&HashSet<String>>>();
   let sorted_result = sorted[0].iter().sorted().collect::<Vec<&String>>();
-  println!("Result: {:?}", sorted_result.iter().join(","));
-  0
+  sorted_result.iter().join(",")
 }

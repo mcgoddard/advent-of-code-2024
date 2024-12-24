@@ -4,7 +4,7 @@ use itertools::Itertools;
 
 use super::lib::{number_of_boxes, print_map, Direction, Space};
 
-pub fn part2(lines: &[String]) -> i64 {
+pub fn part2(lines: &[String]) -> String {
   let mut map_complete = false;
   let mut map = vec![];
   let mut instructions = vec![];
@@ -113,7 +113,7 @@ pub fn part2(lines: &[String]) -> i64 {
       }
     }
   }
-  gps
+  gps.to_string()
 }
 
 fn can_move_vertical(map: &Vec<Vec<Space>>, position: (usize, usize), offset: (i64, i64), seen: &mut HashSet<(usize, usize)>) -> Option<HashSet<(usize, usize)>> {
