@@ -19,7 +19,7 @@ pub fn part2(lines: &[String]) -> String {
       continue;
     }
     if let Some(path) = a_star(&map, (width as i64 - 1, height - 1)) {
-      last_path = HashSet::from_iter(path.iter().cloned());
+      last_path = HashSet::from_iter(path);
     } else {
       first_unsuccessful_coordinate = (coordinate[0] as i64, coordinate[1] as i64);
       break;

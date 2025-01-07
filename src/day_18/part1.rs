@@ -1,6 +1,4 @@
-use std::time::Instant;
-
-use super::lib::{a_star, a_star_2, Space};
+use super::lib::{a_star, Space};
 
 pub fn part1(lines: &[String]) -> String {
   let coordinates = lines.iter().map(|l| l.split(",").map(|s| s.parse().unwrap()).collect()).collect::<Vec<Vec<usize>>>();
@@ -15,10 +13,7 @@ pub fn part1(lines: &[String]) -> String {
   for coordinate in coordinates[0..num_bytes].iter() {
     map[coordinate[1]][coordinate[0]] = Space::Corrupted;
   }
-  let now = Instant::now();
-  if let Some(path) = a_star_2(&map, (width as i64 - 1, height - 1)) {
-    let elapsed = now.elapsed();
-    println!("Elapsed: {:.2?}", elapsed);
+  if let Some(path) = a_star(&map, (width as i64 - 1, height - 1)) {
     path.len().to_string()
   } else {
     panic!("No route found!");
